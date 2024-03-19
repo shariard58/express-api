@@ -1,18 +1,25 @@
-require("dotenv").config();
-const express = require("express");
+import "dotenv/config";
+import mongoose from "mongoose";
+// import { DB_NAME } from "./src/constants";
+import express from "express";
+
 const app = express();
-const myport = process.env.PORT;
+const DB_NAME = "tutorialHub";
 
-console.log(process.env.PORT);
+const MONGODB_URI = process.env.MONGODB_URI;
+const port = process.env.PORT;
+(async () => {
+  try {
+    await mongoose.connect(`${MONGODB_URI}/${DB_NAME}`);
+    app.on("error", (error) => {
+      console.log("Error", error);
+      throw error;
+    });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.get("/shariar", (req, res) => {
-  res.send("<h1> This is Shariar </h1>");
-});
-
-app.listen(myport, () => {
-  console.log(`Example app listening on port ${myport}`);
-});
+    app.listen(port, () => {
+      console.log(`app is listen on port, ${port}`);
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
+})();

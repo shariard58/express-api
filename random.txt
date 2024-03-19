@@ -1,0 +1,76 @@
+import("dotenv").config();
+import { Express } from "express";
+const app = Express();
+const myport = process.env.PORT;
+
+console.log(process.env.PORT);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.get("/api/jokes", (req, res) => {
+  const situation = [
+    {
+      id: "1",
+      myCondition: "Bad",
+    },
+    {
+      id: "2",
+      myCondition: "Very Bad",
+    },
+    {
+      id: "3",
+      myCondition: "Tiny Good",
+    },
+    {
+      id: "4",
+      myCondition: "Small Good",
+    },
+    {
+      id: "5",
+      myCondition: "Good",
+    },
+    {
+      id: "6",
+      myCondition: "Again Very Bad",
+    },
+  ];
+  res.send(situation);
+});
+
+app.get("/api/shariar", (req, res) => {
+  res.send("<h1> This is Shariar </h1>");
+});
+
+app.listen(myport, () => {
+  console.log(`Example app listening on port ${myport}`);
+});
+
+
+
+
+import("dotenv").config();
+import mongoose from "mongoose";
+import { DB_NAME } from "./src/constants";
+import express from "express";
+
+const app = express();
+
+const MONGODB_URI = process.env.MONGODB_URI;
+const port = process.env.PORT;
+(async () => {
+  try {
+    await mongoose.connect(`${MONGODB_URI}/${DB_NAME}`);
+    app.on("error", (error) => {
+      console.log("Error", error);
+      throw error;
+    });
+
+    app.listen(port, () => {
+      console.log(`app is listen on port, ${port}`);
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
+})();
